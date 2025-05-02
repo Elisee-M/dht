@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Environment Monitor</title>
+    <link rel="icon" href="image.png" type="image/png">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Environment Monitor</h1>
+    </header>
+    
+    <main class="dashboard">
+        <div class="sensor-card temperature">
+            <span class="live">LIVE</span>
+            <h2>Temperature</h2>
+            <div class="sensor-value" id="temperature">~<span class="unit">°C</span></div>
+            <div class="last-updated" id="temp-time"></div>
+        </div>
+        
+        <div class="sensor-card humidity">
+            <span class="live">LIVE</span>
+            <h2>Humidity</h2>
+            <div class="sensor-value" id="humidity">~<span class="unit">%</span></div>
+            <div class="last-updated" id="hum-time"></div>
+        </div>
+    </main>
+
+    <div class="connection-status">
+        <div id="firebase-status" class="status-indicator">
+            <span class="status-dot"></span>
+            Firebase Connection
+        </div>
+        <div id="board-status" class="status-indicator">
+            <span class="status-dot"></span>
+            Board Connection
+        </div>
+        <div class="warning">
+            Board disconnected - Check power and connections
+        </div>
+    </div>
+    
+    <footer>
+        <p>Real-time Environmental Monitoring System</p>
+    </footer>
+    
+    <script src="script.js"></script>
+</body>
+</html>
