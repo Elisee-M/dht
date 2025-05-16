@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Environment Data Charts</title>
+    <link rel="stylesheet" href="chart.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/luxon@2.0.2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@1.0.0"></script>
+</head>
+<body>
+    <header>
+        <h1>Historical Environment Data</h1>
+        <button id="back-btn" class="back-button">Back to Live Data</button>
+    </header>
+    
+    <main class="chart-container">
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Loading data...</p>
+        </div>
+        
+        <div class="chart-card">
+            <h2>Temperature History</h2>
+            <canvas id="temp-chart"></canvas>
+        </div>
+        
+        <div class="chart-card">
+            <h2>Humidity History</h2>
+            <canvas id="hum-chart"></canvas>
+        </div>
+        
+        <div class="controls">
+            <select id="time-range">
+                <option value="1">Last 24 Hours</option>
+                <option value="7">Last 7 Days</option>
+                <option value="30">Last 30 Days</option>
+            </select>
+        </div>
+        
+        <div class="error-message" id="error-message" style="display: none;">
+            Failed to load data. Please check your internet connection and try again.
+        </div>
+    </main>
+
+    <script src="chart.js"></script>
+</body>
+</html>

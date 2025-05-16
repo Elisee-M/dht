@@ -1,4 +1,4 @@
- // Firebase configuration
+// Firebase configuration
 const firebaseConfig = {
     databaseURL: "https://dht11-af095-default-rtdb.firebaseio.com"
 };
@@ -18,11 +18,23 @@ const BOARD_TIMEOUT = 15000; // 15 seconds timeout
 let boardDisconnectTimer;
 let isBoardConnected = false;
 
+// History reference
+const historyRef = database.ref('DHT11/history');
+
 // Format timestamp
 function formatTime(timestamp) {
     if (!timestamp) return "Never updated";
     const date = new Date(timestamp);
     return `Last updated: ${date.toLocaleTimeString()}`;
+}
+
+// Save data to history
+function saveToHistory(temperature, humidity) {
+    const timestamp = Date.now();
+    historyRef.child(timestamp).set({
+        Temperature: parseFloat(temperature),
+        Humidity: parseFloat(humidity)
+    });
 }
 
 // Check board connection status
@@ -73,8 +85,15 @@ function updateData(snapshot, elementId, timeElementId) {
     }
     
     if (value !== null) {
-        element.innerHTML = `${value.toFixed(1)}<span class="unit">${elementId === 'temperature' ? '°C' : '%'}</span>`;
+        const numericValue = parseFloat(value);
+        element.innerHTML = `${numericValue.toFixed(1)}<span class="unit">${elementId === 'temperature' ? '°C' : '%'}</span>`;
         timeElement.textContent = formatTime(lastUpdateTime);
+        
+        // Save to history when temperature updates
+        if (elementId === 'temperature') {
+            const humidity = document.getElementById('humidity').textContent.replace(/[^0-9.]/g, '');
+            saveToHistory(value, humidity || 0);
+        }
         
         // Add visual feedback on update
         element.style.transform = 'scale(1.1)';
@@ -93,7 +112,7 @@ database.ref('.info/connected').on('value', (snapshot) => {
         firebaseStatus.classList.add('connected');
         firebaseStatus.classList.remove('disconnected', 'connecting');
         console.log('Firebase connected');
-        checkBoardConnection(); // Immediately check board status
+        checkBoardConnection();
     } else {
         firebaseStatus.classList.add('disconnected');
         firebaseStatus.classList.remove('connected', 'connecting');
@@ -133,3 +152,8 @@ setBoardConnecting();
 
 // Check connection status periodically
 setInterval(checkBoardConnection, 5000);
+
+// Chart button functionality
+document.getElementById('chart-btn').addEventListener('click', () => {
+    window.location.href = 'chart.html';
+});
